@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions
 import time
 import sys
 import json
-from fake_useragent import UserAgent
+# from fake_useragent import UserAgent
 import random
 
 
@@ -17,7 +17,7 @@ import random
 class PchomePanic:
     def __init__(self):
         # self.ua = 
-        self.user_agent = UserAgent().chrome
+        # self.user_agent = UserAgent().chrome
         self.cookie = None
         self.email = None
         self.password = None
@@ -39,7 +39,7 @@ class PchomePanic:
 
     def first_login(self):
         option = webdriver.ChromeOptions()
-        option.add_argument(f"user-agent={self.user_agent}")
+        # option.add_argument(f"user-agent={self.user_agent}")
         driver = webdriver.Chrome(chrome_options=option,
                                 executable_path='./chromedriver')
         self.base_url = 'https://ecvip.pchome.com.tw/login/v3/login.htm?rurl='
@@ -53,7 +53,7 @@ class PchomePanic:
         input_password.send_keys(self.password)
         time.sleep(1)
         btn_login.click()
-        time.sleep(5)
+        time.sleep(6)
 
         self.cookie = driver.get_cookies()
         jsonCookies = json.dumps(self.cookie)
