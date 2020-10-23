@@ -24,6 +24,8 @@ class PchomePanic:
         self.target_url = None
         self.thread_list = list()
         self.browser_qty = None
+        self.wait_max_secend = 5
+        self.wait_min_secend = 2
 
     def load_credentials(self):
         f = open('credentials.json')
@@ -49,6 +51,7 @@ class PchomePanic:
 
         input_email.send_keys(self.email)
         input_password.send_keys(self.password)
+        time.sleep(1)
         btn_login.click()
         time.sleep(5)
 
@@ -100,17 +103,17 @@ class PchomePanic:
             print('test')
             driver.refresh()
         finally:
-            time.sleep(random.uniform(1, 5))
+            time.sleep(random.uniform(self.wait_min_secend, self.wait_max_secend))
 
 
     def thread_run(self):
         for i in range(self.browser_qty):
-            t = threading.Thread(name='Test {}'.format(i), target=panic_spree_script)
+            t = threading.Thread(name='Test {}'.format(i), target=self.panic_spree_script)
             t.start()
             time.sleep(1)
             print(t.name + ' started!')
-            thread_list.append(t)
-        for thread in thread_list:
+            self.thread_list.append(t)
+        for thread in self.thread_list:
             thread.join()
 
         print('Test completed!')
@@ -118,7 +121,6 @@ class PchomePanic:
 
 
 pchome = PchomePanic()
-
 pchome.load_credentials()
 pchome.first_login()
-pchome.panic_spree_script()
+pchome.thread_run()
