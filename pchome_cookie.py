@@ -13,10 +13,9 @@ import json
 import random
 
 
-
 class PchomePanic:
     def __init__(self):
-        # self.ua = 
+        # self.ua =
         # self.user_agent = UserAgent().chrome
         self.cookie = None
         self.email = None
@@ -41,7 +40,7 @@ class PchomePanic:
         option = webdriver.ChromeOptions()
         # option.add_argument(f"user-agent={self.user_agent}")
         driver = webdriver.Chrome(chrome_options=option,
-                                executable_path='./chromedriver')
+                                  executable_path='./chromedriver')
         self.base_url = 'https://ecvip.pchome.com.tw/login/v3/login.htm?rurl='
         driver.get(self.base_url + self.target_url)
 
@@ -65,31 +64,51 @@ class PchomePanic:
     def panic_spree_script(self):
         option = webdriver.ChromeOptions()
         driver = webdriver.Chrome(chrome_options=option,
-                                executable_path='./chromedriver')
+                                  executable_path='./chromedriver')
 
         driver.delete_all_cookies()
         driver.get(self.target_url)
-        
+
         for c in self.cookie:
             driver.add_cookie(c)
         driver.refresh()
-        driver.execute_script("document.getElementById('btnRegister').style.display = 'block';")
-        driver.execute_script("document.getElementsByClassName('overlay-shadow')[0].style.display = 'none';")
-        btnRegister = driver.find_element_by_id("btnRegister")
+        # driver.execute_script(
+        #     "document.getElementById('btnRegister').style.display = 'block';")
+        # driver.execute_script(
+        #     "document.getElementsByClassName('overlay-shadow')[0].style.display = 'none';")
+        driver.execute_script(
+            """
+            const backdrop = document.getElementsByClassName('overlay-shadow')[0];
+            const registerFailWindow = document.getElementById('registerFail');
+            const btnRegister = document.getElementById('btnRegister');
+            btnRegister.style.display = 'block';
+            btnRegister.style.position = 'absolute';
+            btnRegister.style.top = 0;
+            btnRegister.style.left = 0;
+            registerFailWindow.style.display = 'none';
+            backdrop.style.display = 'none';
+            """)
+
         try:
             while True:
-                self.refresh_clickbtn(driver, btnRegister)
+                self.refresh_clickbtn(driver)
         except KeyboardInterrupt:
             pass
 
-    def refresh_clickbtn(self, driver, btnRegister):
-        btnRegister.click()
-        time.sleep(random.uniform(self.wait_min_secend, self.wait_max_secend))
+    def refresh_clickbtn(self, driver):
+        try:
+            driver.find_element_by_id("btnRegister").click()
+        except ElementNotInteractableException:
+            print(ElementNotInteractableException)
+        except:
+            print('error interval')
 
+        # time.sleep(random.uniform(self.wait_min_secend, self.wait_max_secend))
 
     def thread_run(self):
         for i in range(self.browser_qty):
-            t = threading.Thread(name='Test {}'.format(i), target=self.panic_spree_script)
+            t = threading.Thread(name='Test {}'.format(
+                i), target=self.panic_spree_script)
             t.start()
             time.sleep(1)
             print(t.name + ' started!')
@@ -98,7 +117,6 @@ class PchomePanic:
             thread.join()
 
         print('Test completed!')
-
 
 
 pchome = PchomePanic()
