@@ -73,37 +73,18 @@ class PchomePanic:
         for c in self.cookie:
             driver.add_cookie(c)
         driver.refresh()
-
+        driver.execute_script("document.getElementById('btnRegister').style.display = 'block';")
+        driver.execute_script("document.getElementsByClassName('overlay-shadow')[0].style.display = 'none';")
+        btnRegister = driver.find_element_by_id("btnRegister")
         try:
             while True:
-                self.refresh_clickbtn(driver)
+                self.refresh_clickbtn(driver, btnRegister)
         except KeyboardInterrupt:
             pass
 
-    def refresh_clickbtn(self, driver):
-        try:
-            WebDriverWait(driver, 3).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.ID, 'btnResult'),
-                '登錄結果查詢>'
-            )
-            )
-            btnRegister = driver.find_element_by_id("btnRegister")
-            btnRegister.click()
-        except NoSuchElementException:
-            print('NoSuchElementException')
-            driver.refresh()
-        except ElementNotInteractableException:
-            print('ElementNotInteractableException')
-            driver.refresh()
-        except ElementClickInterceptedException:
-            print('ElementClickInterceptedException')
-            driver.refresh()
-        except:
-            print('test')
-            driver.refresh()
-        finally:
-            time.sleep(random.uniform(self.wait_min_secend, self.wait_max_secend))
+    def refresh_clickbtn(self, driver, btnRegister):
+        btnRegister.click()
+        time.sleep(random.uniform(self.wait_min_secend, self.wait_max_secend))
 
 
     def thread_run(self):
