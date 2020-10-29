@@ -1,4 +1,3 @@
-from getpass import getpass
 from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException, ElementNotInteractableException
 from selenium import webdriver
 import threading
