@@ -14,8 +14,6 @@ import random
 
 class PchomePanic:
     def __init__(self):
-        # self.ua =
-        # self.user_agent = UserAgent().chrome
         self.cookie = None
         self.email = None
         self.password = None

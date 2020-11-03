@@ -2,4 +2,9 @@
 chromedriver.exe
 *.log
 chromedriver
-vcyber.json
+**/__pycache__
+**.ipynb
+**.spec
+build
+dist
+**.json
