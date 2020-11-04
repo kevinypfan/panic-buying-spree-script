@@ -19,6 +19,7 @@ class Application():
 
         import sys
         self.app = QtWidgets.QApplication(sys.argv)
+        self.app.setWindowIcon(QtGui.QIcon('comics-ironman-hand_97416.ico'))
         self.MainWindow = QtWidgets.QMainWindow()
         self.main_ui = main_ui.Ui_MainWindow()
         self.main_ui.setupUi(self.MainWindow)
