@@ -100,7 +100,6 @@ class Application():
         
 
     def close_btn_handler(self):
-        print('close')
         self.pchome.stop()
         import sys
         sys.exit(0)
@@ -112,7 +111,6 @@ class Application():
         pass
 
     def activate_submit_handler(self):
-        print('activate_submit_handler')
         response = requests.post('https://dev.kevins.fun/v1.0/activate/verify-code', json={'activate_code': self.activate_ui.activate_code.text(), 'serial_code': getMachine_addr()})
         if response.json()['returnCode'] == '000000':
             with open('activate_key', 'w') as f:
@@ -149,7 +147,6 @@ class Application():
         # msgBox.setDefaultButton(QMessageBox.Retry)
         # msgBox.setDetailedText('这是详细的信息：学点编程吧，我爱你！')
         reply = msgBox.exec() 
-        print(reply)
         # if reply == QMessageBox.Retry:
         #     self.la.setText('你选择了Retry！') 
         # elif reply == QMessageBox.Abort:

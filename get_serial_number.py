@@ -15,4 +15,3 @@ def getMachine_addr():
 	return os.popen(command).read().replace("\n","").replace("	","").replace(" ","").replace("SerialNumber","")
 
 #output machine serial code: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX
-print(getMachine_addr())

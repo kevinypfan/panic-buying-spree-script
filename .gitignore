@@ -4,7 +4,6 @@ chromedriver.exe
 chromedriver
 **/__pycache__
 **.ipynb
-**.spec
 build
 dist
 **.json

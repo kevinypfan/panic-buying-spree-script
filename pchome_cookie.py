@@ -29,7 +29,6 @@ class PchomePanic:
         self.password = data['password']
         self.target_url = data['target_url']
         self.browser_qty = data['browser_qty']
-        print(f'email: {self.email}, target_url: {self.target_url}')
 
     def first_login(self):
         option = webdriver.ChromeOptions()
@@ -91,10 +90,9 @@ class PchomePanic:
         try:
             driver.find_element_by_id("btnRegister").click()
         except ElementNotInteractableException:
-            print(ElementNotInteractableException)
+            pass
         except:
-            print('error interval')
-
+            pass
         # time.sleep(random.uniform(self.wait_min_secend, self.wait_max_secend))
 
     def thread_run(self):
@@ -105,12 +103,10 @@ class PchomePanic:
             # t.setDaemon(True)
             t.start()
             time.sleep(1)
-            print(t.name + ' started!')
             self.thread_list.append(t)
         for thread in self.thread_list:
             thread.join()
 
-        print('Test completed!')
 
     def run(self, data):
         self.load_credentials(data)
