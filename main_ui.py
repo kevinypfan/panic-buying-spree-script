@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 354)
+        MainWindow.resize(761, 337)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
@@ -72,18 +72,24 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.record)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 761, 21))
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(self.menubar)
         self.menu.setObjectName("menu")
+        self.menu_2 = QtWidgets.QMenu(self.menubar)
+        self.menu_2.setObjectName("menu_2")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.clear_record = QtWidgets.QAction(MainWindow)
         self.clear_record.setObjectName("clear_record")
+        self.about = QtWidgets.QAction(MainWindow)
+        self.about.setObjectName("about")
         self.menu.addAction(self.clear_record)
+        self.menu_2.addAction(self.about)
         self.menubar.addAction(self.menu.menuAction())
+        self.menubar.addAction(self.menu_2.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -99,7 +105,9 @@ class Ui_MainWindow(object):
         self.close_btn.setText(_translate("MainWindow", "結束"))
         self.record.setText(_translate("MainWindow", "記錄此次輸入內容"))
         self.menu.setTitle(_translate("MainWindow", "設定"))
+        self.menu_2.setTitle(_translate("MainWindow", "說明"))
         self.clear_record.setText(_translate("MainWindow", "清除紀錄"))
+        self.about.setText(_translate("MainWindow", "關於"))
 
 
 if __name__ == "__main__":
