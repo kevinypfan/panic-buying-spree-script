@@ -1,4 +1,5 @@
 const Router = require("@koa/router");
+const { v4: uuidv4 } = require("uuid");
 const Activate = require("../entities/activate");
 const Cargo = require("../models/cargo");
 
@@ -21,7 +22,7 @@ router.get("/create-new-code", async (ctx, next) => {
     return (ctx.body = cargo);
   }
 
-  const activate = await new Activate().save();
+  const activate = await new Activate({ activate_code: uuidv4() }).save();
 
   cargo.info = activate;
   ctx.body = cargo;

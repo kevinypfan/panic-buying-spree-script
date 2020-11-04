@@ -34,6 +34,7 @@ class Ui_MainWindow(object):
         self.label_2.setObjectName("label_2")
         self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
         self.password = QtWidgets.QLineEdit(self.gridLayoutWidget)
+        self.password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.password.setObjectName("password")
         self.gridLayout.addWidget(self.password, 1, 2, 1, 1)
         self.label_3 = QtWidgets.QLabel(self.gridLayoutWidget)
@@ -96,7 +97,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "pchome小幫手"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "會員帳號："))
         self.label_2.setText(_translate("MainWindow", "會員密碼："))
         self.label_3.setText(_translate("MainWindow", "目標網址："))
