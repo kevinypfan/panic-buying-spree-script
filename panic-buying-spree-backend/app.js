@@ -15,4 +15,6 @@ app.use(bodyParser());
 
 app.use(activateRouter.routes()).use(activateRouter.allowedMethods());
 
-app.listen(process.env.PORT);
+app.listen(process.env.PORT, () => {
+  console.log("server start port: " + process.env.PORT);
+});
