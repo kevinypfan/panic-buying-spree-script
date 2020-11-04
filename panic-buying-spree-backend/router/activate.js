@@ -4,7 +4,7 @@ const Cargo = require("../models/cargo");
 
 const router = new Router();
 
-router.prefix("/activate");
+router.prefix(`/${process.env.VERSION}/activate`);
 // /activate/create-new-code
 router.get("/create-new-code", async (ctx, next) => {
   const cargo = new Cargo();
