@@ -20,12 +20,10 @@ class PchomePanic:
         self.target_url = None
         self.thread_list = list()
         self.browser_qty = None
-        self.wait_max_secend = 5
-        self.wait_min_secend = 2
+        self.dummy_drivers = []
 
-    def load_credentials(self):
-        f = open('credentials.json')
-        data = json.load(f)
+
+    def load_credentials(self, data):
         self.base_url = 'https://ecvip.pchome.com.tw/login/v3/login.htm?rurl='
         self.email = data['email']
         self.password = data['password']
@@ -62,17 +60,12 @@ class PchomePanic:
         option = webdriver.ChromeOptions()
         driver = webdriver.Chrome(chrome_options=option,
                                   executable_path='./chromedriver')
-
+        self.dummy_drivers.append(driver)
         driver.delete_all_cookies()
         driver.get(self.target_url)
-
         for c in self.cookie:
             driver.add_cookie(c)
         driver.refresh()
-        # driver.execute_script(
-        #     "document.getElementById('btnRegister').style.display = 'block';")
-        # driver.execute_script(
-        #     "document.getElementsByClassName('overlay-shadow')[0].style.display = 'none';")
         driver.execute_script(
             """
             const backdrop = document.getElementsByClassName('overlay-shadow')[0];
@@ -91,6 +84,8 @@ class PchomePanic:
                 self.refresh_clickbtn(driver)
         except KeyboardInterrupt:
             pass
+        finally:
+            driver.quit()
 
     def refresh_clickbtn(self, driver):
         try:
@@ -103,9 +98,11 @@ class PchomePanic:
         # time.sleep(random.uniform(self.wait_min_secend, self.wait_max_secend))
 
     def thread_run(self):
+ 
         for i in range(self.browser_qty):
             t = threading.Thread(name='Test {}'.format(
                 i), target=self.panic_spree_script)
+            # t.setDaemon(True)
             t.start()
             time.sleep(1)
             print(t.name + ' started!')
@@ -115,8 +112,13 @@ class PchomePanic:
 
         print('Test completed!')
 
+    def run(self, data):
+        self.load_credentials(data)
+        self.first_login()
+        self.thread_run()
 
-pchome = PchomePanic()
-pchome.load_credentials()
-pchome.first_login()
-pchome.thread_run()
+    def stop(self):
+        for driver in self.dummy_drivers:
+            driver.quit()
+
+
