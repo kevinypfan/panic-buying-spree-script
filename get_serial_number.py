@@ -4,12 +4,12 @@
 import os, sys
 def getMachine_addr():
 	os_type = sys.platform.lower()
-	if "win" in os_type:
+	if "win" == os_type:
 		command = "wmic baseboard get serialnumber"
-	elif "linux" in os_type:
+	elif "linux" == os_type:
 		command = "hal-get-property --udi /org/freedesktop/Hal/devices/computer --key system.hardware.uuid"
-	elif "darwin" in os_type:
-		command = "ioreg -l | grep IOPlatformSerialNumber"
+	elif "darwin" == os_type:
+		command = "ioreg -c IOPlatformExpertDevice -d 2 | awk -F\\\" '/IOPlatformSerialNumber/{print $(NF-1)}'"
 	return os.popen(command).read().replace("\n","").replace("	","").replace(" ","").replace("SerialNumber","")
 
 #output machine serial code: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX
