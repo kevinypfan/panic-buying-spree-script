@@ -8,3 +8,4 @@ chromedriver
 build
 dist
 **.json
+activate_key

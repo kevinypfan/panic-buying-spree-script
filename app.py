@@ -9,13 +9,13 @@ from helpers import validateJSON
 from pchome_cookie import PchomePanic
 import threading
 from get_serial_number import getMachine_addr
+import requests
 
-ACTIVATE_CODE = "abc123"
 
 class Application():
     def __init__(self):
         
-        self.serial_code = None
+        self.serial_code = getMachine_addr()
 
         import sys
         self.app = QtWidgets.QApplication(sys.argv)
@@ -31,13 +31,31 @@ class Application():
         self.ActivateWindow = QtWidgets.QMainWindow()
         self.activate_ui = activate_ui.Ui_MainWindow()
         self.activate_ui.setupUi(self.ActivateWindow)
-        self.ActivateWindow.show()
+        if self.is_activate():
+            self.MainWindow.show()
+        else:   
+            self.ActivateWindow.show()
         self.clear_form()
         self.setup_app()
         self.bind_events()
         self.pchome = PchomePanic()
         sys.exit(self.app.exec_())
 
+    def load_activate_code(self):
+        if os.path.exists('activate_key'):
+            f = open('activate_key')
+            return f.read()
+        return None
+
+    def is_activate(self):
+        activate_code = self.load_activate_code()
+        if activate_code == None:
+            return False
+        else:
+            response = requests.post('https://dev.kevins.fun/v1.0/activate/verify-code', json={'activate_code': activate_code, 'serial_code': getMachine_addr()})
+            if response.json()['returnCode'] == '000000':
+                return True
+    
     def setup_app(self):
         if os.path.exists('record.json'):
             f = open('record.json')
@@ -54,14 +72,13 @@ class Application():
     def about_show(self):
         self.serial_code = getMachine_addr()
         self.about_ui.serial_code.setText(self.serial_code)
-        self.about_ui.activate_code.setText(ACTIVATE_CODE)
+        self.about_ui.activate_code.setText(self.load_activate_code())
         self.DialogAbout.show()
 
     def about_close(self):
         self.DialogAbout.close()
 
     def submit_btn_handler(self):
-        print('submit')
         form_data = {
             'email': self.main_ui.email.text(),
             'password': self.main_ui.password.text(),
@@ -69,10 +86,10 @@ class Application():
             'browser_qty': self.main_ui.browser_qty.value(),
             'record': self.main_ui.record.isChecked()
         }
-        print(form_data)
-        json_form_data = json.dumps(form_data)
-        with open('record.json', 'w') as f:
-            f.write(json_form_data)
+        if self.main_ui.record.isChecked():
+            json_form_data = json.dumps(form_data)
+            with open('record.json', 'w') as f:
+                f.write(json_form_data)
         self.MainWindow.close()
         self.ShotdownWindow.show()
         
@@ -89,16 +106,21 @@ class Application():
         sys.exit(0)
     
     def clear_record_handler(self):
-        os.remove("record.json")
-        self.clear_form()
+        if os.path.exists('record.json'):
+            os.remove("record.json")
+            self.clear_form()
+        pass
 
     def activate_submit_handler(self):
         print('activate_submit_handler')
-        if self.activate_ui.activate_code.text() == ACTIVATE_CODE:
+        response = requests.post('https://dev.kevins.fun/v1.0/activate/verify-code', json={'activate_code': self.activate_ui.activate_code.text(), 'serial_code': getMachine_addr()})
+        if response.json()['returnCode'] == '000000':
+            with open('activate_key', 'w') as f:
+                f.write(self.activate_ui.activate_code.text())
             self.ActivateWindow.close()
             self.MainWindow.show()
         else:
-            self.critical()
+            self.critical(content=f'{response.json()["returnMessage"]}({response.json()["returnCode"]})')
 
     def bind_events(self):
         self.main_ui.submit_btn.clicked.connect(self.submit_btn_handler)
