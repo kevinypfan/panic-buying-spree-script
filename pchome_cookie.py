@@ -114,7 +114,10 @@ class PchomePanic:
         self.thread_run()
 
     def stop(self):
-        for driver in self.dummy_drivers:
-            driver.quit()
+        for i, driver in enumerate(self.dummy_drivers):
+            t = threading.Thread(name='Close {}'.format(
+                i), target=driver.quit)
+            # t.setDaemon(True)
+            t.start()
 
 
