@@ -30,24 +30,20 @@
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>130</x>
+      <x>100</x>
       <y>30</y>
-      <width>521</width>
+      <width>581</width>
       <height>161</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="activate_code"/>
+     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>輸入啟動序號：</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>電腦機碼：</string>
        </property>
       </widget>
      </item>
@@ -58,8 +54,19 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="activate_code"/>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>電腦機碼：</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="copy_btn">
+       <property name="text">
+        <string>複製</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
