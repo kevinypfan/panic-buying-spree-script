@@ -19,6 +19,7 @@ class ActivateWindow(QtWidgets.QMainWindow):
 
         # Bind event
         self.ui.submit_btn.clicked.connect(self.activate_submit_handler)
+        self.ui.copy_btn.clicked.connect(self.copyText)
 
         # Next window
         self.next = next
@@ -29,6 +30,9 @@ class ActivateWindow(QtWidgets.QMainWindow):
     def setup_data(self):
         self.ui.serial_code.setText(getMachine_addr())
 
+    def copyText(self):
+        clipboard = QtWidgets.QApplication.clipboard()
+        clipboard.setText(self.ui.serial_code.text())
 
     def activate_submit_handler(self):
         response = requests.post('https://dev.kevins.fun/v1.0/activate/verify-code', json={'activate_code': self.ui.activate_code.text(), 'serial_code': getMachine_addr()})
@@ -39,10 +43,3 @@ class ActivateWindow(QtWidgets.QMainWindow):
             self.next()
         else:
             critical(content=f'{response.json()["returnMessage"]}({response.json()["returnCode"]})')
-
-
-if __name__ == '__main__':
-    app = QtWidgets.QApplication([])
-    window = ActivateWindow()
-    window.show()
-    sys.exit(app.exec_())
