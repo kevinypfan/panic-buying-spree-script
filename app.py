@@ -9,8 +9,8 @@ from helpers import validateJSON
 from pchome_cookie import PchomePanic
 import threading
 from get_serial_number import getMachine_addr
-import requests
 from windows.utils import critical
+import requests
 
 
 class Application():
@@ -110,7 +110,6 @@ class Application():
         if os.path.exists('record.json'):
             os.remove("record.json")
             self.clear_form()
-        pass
 
     def activate_submit_handler(self):
         response = requests.post('https://dev.kevins.fun/v1.0/activate/verify-code', json={'activate_code': self.activate_ui.activate_code.text(), 'serial_code': getMachine_addr()})
