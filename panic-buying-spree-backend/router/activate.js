@@ -31,9 +31,20 @@ router.get("/create-new-code", async (ctx, next) => {
 router.post("/verify-code", async (ctx, next) => {
   const cargo = new Cargo();
 
-  if (!ctx.request.body.activate_code || !ctx.request.body.serial_code) {
+  if (!ctx.request.body.serial_code) {
     cargo.returnCode = "100022";
     cargo.returnMessage = "required field not found";
+    return (ctx.body = cargo);
+  }
+
+  const serial_code_find = await Activate.findOne({
+    serial_code: ctx.request.body.serial_code,
+  });
+
+  if (serial_code_find) {
+    cargo.returnCode = "000001";
+    cargo.returnMessage = "already activate";
+    cargo.info = serial_code_find;
     return (ctx.body = cargo);
   }
 
