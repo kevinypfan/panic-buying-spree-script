@@ -31,11 +31,15 @@ def getMachine_addr():
 
 
 def is_activate(activate_code, serial_code):
-    if activate_code == None:
+    if serial_code == None:
         return False
     else:
         response = requests.post('https://dev.kevins.fun/v1.0/activate/verify-code', json={'activate_code': activate_code, 'serial_code': serial_code})
         if response.json()['returnCode'] == '000000':
+            return True
+        if response.json()['returnCode'] == '000001':
+            with open('activate_key', 'w') as f:
+                f.write(response.json()['info']['activate_code'])
             return True
 
 
