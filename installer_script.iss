@@ -19,7 +19,7 @@ DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 OutputDir=D:\KevinFan\panic-buying-spree-script
-OutputBaseFilename=pchome小幫手安裝檔
+OutputBaseFilename=pchome小幫手安裝檔v1.0
 SetupIconFile=D:\KevinFan\panic-buying-spree-script\dist\v2\comics-ironman-hand_97416.ico
 Compression=lzma
 SolidCompression=yes
