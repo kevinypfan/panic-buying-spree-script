@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'activate.ui'
+# Form implementation generated from reading ui file 'ui\activate.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.1
 #
@@ -17,21 +17,28 @@ class Ui_MainWindow(object):
         MainWindow.resize(761, 335)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(140, 50, 491, 80))
-        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.label = QtWidgets.QLabel(self.horizontalLayoutWidget)
-        self.label.setObjectName("label")
-        self.horizontalLayout.addWidget(self.label)
-        self.activate_code = QtWidgets.QLineEdit(self.horizontalLayoutWidget)
-        self.activate_code.setObjectName("activate_code")
-        self.horizontalLayout.addWidget(self.activate_code)
         self.submit_btn = QtWidgets.QPushButton(self.centralwidget)
-        self.submit_btn.setGeometry(QtCore.QRect(320, 180, 131, 31))
+        self.submit_btn.setGeometry(QtCore.QRect(310, 230, 131, 31))
         self.submit_btn.setObjectName("submit_btn")
+        self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(130, 30, 521, 161))
+        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
+        self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setObjectName("gridLayout")
+        self.label = QtWidgets.QLabel(self.gridLayoutWidget)
+        self.label.setObjectName("label")
+        self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
+        self.label_2 = QtWidgets.QLabel(self.gridLayoutWidget)
+        self.label_2.setObjectName("label_2")
+        self.gridLayout.addWidget(self.label_2, 0, 0, 1, 1)
+        self.serial_code = QtWidgets.QLineEdit(self.gridLayoutWidget)
+        self.serial_code.setEnabled(False)
+        self.serial_code.setObjectName("serial_code")
+        self.gridLayout.addWidget(self.serial_code, 0, 1, 1, 1)
+        self.activate_code = QtWidgets.QLineEdit(self.gridLayoutWidget)
+        self.activate_code.setObjectName("activate_code")
+        self.gridLayout.addWidget(self.activate_code, 1, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 761, 21))
@@ -46,9 +53,10 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "pchome小幫手"))
-        self.label.setText(_translate("MainWindow", "輸入啟動序號："))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.submit_btn.setText(_translate("MainWindow", "送出"))
+        self.label.setText(_translate("MainWindow", "輸入啟動序號："))
+        self.label_2.setText(_translate("MainWindow", "電腦機碼："))
 
 
 if __name__ == "__main__":

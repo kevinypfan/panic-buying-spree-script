@@ -1,8 +1,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-import main_ui
-import shutdown_ui
-import about_ui
-import activate_ui
+import views.main_ui
+import views.shutdown_ui
+import views.about_ui
+import views.activate_ui
 import json
 import os
 from helpers import validateJSON
@@ -10,6 +10,7 @@ from pchome_cookie import PchomePanic
 import threading
 from get_serial_number import getMachine_addr
 import requests
+from windows.utils import critical
 
 
 class Application():
@@ -19,22 +20,22 @@ class Application():
 
         import sys
         self.app = QtWidgets.QApplication(sys.argv)
-        self.app.setWindowIcon(QtGui.QIcon('comics-ironman-hand_97416.ico'))
         self.MainWindow = QtWidgets.QMainWindow()
-        self.main_ui = main_ui.Ui_MainWindow()
+        self.main_ui = views.main_ui.Ui_MainWindow()
         self.main_ui.setupUi(self.MainWindow)
         self.ShotdownWindow = QtWidgets.QMainWindow()
-        self.shutdown_ui = shutdown_ui.Ui_MainWindow()
+        self.shutdown_ui = views.shutdown_ui.Ui_MainWindow()
         self.shutdown_ui.setupUi(self.ShotdownWindow)
         self.DialogAbout = QtWidgets.QDialog()
-        self.about_ui = about_ui.Ui_Dialog()
+        self.about_ui = views.about_ui.Ui_Dialog()
         self.about_ui.setupUi(self.DialogAbout)
         self.ActivateWindow = QtWidgets.QMainWindow()
-        self.activate_ui = activate_ui.Ui_MainWindow()
+        self.activate_ui = views.activate_ui.Ui_MainWindow()
         self.activate_ui.setupUi(self.ActivateWindow)
         if self.is_activate():
             self.MainWindow.show()
         else:   
+            self.activate_ui.serial_code.setText(getMachine_addr())
             self.ActivateWindow.show()
         self.clear_form()
         self.setup_app()
@@ -119,7 +120,7 @@ class Application():
             self.ActivateWindow.close()
             self.MainWindow.show()
         else:
-            self.critical(content=f'{response.json()["returnMessage"]}({response.json()["returnCode"]})')
+            critical(content=f'{response.json()["returnMessage"]}({response.json()["returnCode"]})')
 
     def bind_events(self):
         self.main_ui.submit_btn.clicked.connect(self.submit_btn_handler)
@@ -138,22 +139,6 @@ class Application():
         self.main_ui.browser_qty.setValue(1)
         self.main_ui.record.setChecked(False)
     
-    def critical(self, title="錯誤", content="輸入之序號有誤！"):
-        # reply = QMessageBox.critical(self,'错误','这是一个错误消息对话框', QMessageBox.Retry | QMessageBox.Abort | QMessageBox.Ignore , QMessageBox.Retry)
-        msgBox = QtWidgets.QMessageBox()
-        msgBox.setWindowTitle(title)
-        msgBox.setIcon(QtWidgets.QMessageBox.Critical)
-        msgBox.setText(content)
-        msgBox.addButton('確定', QtWidgets.QMessageBox.AcceptRole)
-        # msgBox.setDefaultButton(QMessageBox.Retry)
-        # msgBox.setDetailedText('这是详细的信息：学点编程吧，我爱你！')
-        reply = msgBox.exec() 
-        # if reply == QMessageBox.Retry:
-        #     self.la.setText('你选择了Retry！') 
-        # elif reply == QMessageBox.Abort:
-        #     self.la.setText('你选择了Abort！')
-        # else:
-        #     self.la.setText('你选择了Ignore！')
 
 if __name__ == "__main__":
     qt_app = Application()
