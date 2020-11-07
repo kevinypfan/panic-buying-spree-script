@@ -4,7 +4,7 @@ import sys
 
 
 class ShutdownWindow(QtWidgets.QMainWindow):
-    def __init__(self, pchome):
+    def __init__(self, pchome, momo):
         super(ShutdownWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -18,14 +18,16 @@ class ShutdownWindow(QtWidgets.QMainWindow):
         # StatusBar
         # self.statusBar().showMessage('TEST Again!!!')
         self.pchome = pchome
+        self.momo = momo
 
     def close_btn_handler(self):
         self.pchome.stop()
+        self.momo.stop()
         import sys
         sys.exit(0)
 
-if __name__ == '__main__':
-    app = QtWidgets.QApplication([])
-    window = ShutdownWindow()
-    window.show()
-    sys.exit(app.exec_())
+# if __name__ == '__main__':
+#     app = QtWidgets.QApplication([])
+#     window = ShutdownWindow()
+#     window.show()
+#     sys.exit(app.exec_())

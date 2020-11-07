@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, QtGui
 from views.about_ui import Ui_Dialog
 import sys
-from utils.helpers import getMachine_addr, load_activate_code
+from tools.helpers import getMachine_addr, load_activate_code
 
 
 class AboutDialog(QtWidgets.QDialog):

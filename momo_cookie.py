@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.alert import Alert
+import threading
 
 import time
 import sys
@@ -21,47 +22,53 @@ class MomoPanic:
         self.target_id = None
         self.thread_list = list()
         self.browser_qty = None
-        self.driver = None
-        self.load_credentials()
+        self.dummy_drivers = list()
 
-    def load_credentials(self):
-        f = open('momo_auth.json')
-        data = json.load(f)
+    def load_credentials(self, data):
         self.email = data['email']
         self.password = data['password']
         self.target_url = data['target_url']
         self.target_id = data['target_id']
         self.browser_qty = data['browser_qty']
-        print(f'email: {self.email}, target_url: {self.target_url}')
 
-    def input_keyin(self, el_id, value):
-        element = self.driver.find_element_by_id(el_id)
+    def input_keyin(self, driver, el_id, value):
+        element = driver.find_element_by_id(el_id)
         time.sleep(0.5)
         element.send_keys(value)
 
-    def run(self):
+
+    def panic_spree_script(self):
         option = webdriver.ChromeOptions()
-        self.driver = webdriver.Chrome(chrome_options=option,
+        driver = webdriver.Chrome(chrome_options=option,
                                        executable_path='chromedriver.exe')
+        self.dummy_drivers.append(driver)
 
-        alert = Alert(self.driver)
-        wait = WebDriverWait(self.driver, 10)
+        alert = Alert(driver)
+        wait = WebDriverWait(driver, 10)
 
-        self.driver.get(self.target_url)
+        driver.get(self.target_url)
 
-        self.driver.find_element_by_id("promo0_0").click()
+        driver.execute_script(
+            f"""
+            const btnRegister = document.getElementById('{self.target_id}');
+            btnRegister.style.position = 'fixed';
+            btnRegister.style.top = 0;
+            btnRegister.style.left = 0;
+            """)
+
+        driver.find_element_by_id(self.target_id).click()
         wait.until(EC.presence_of_element_located((By.ID, "ajaxLogin")))
 
-        login_dom = self.driver.find_element_by_id('ajaxLogin')
+        login_dom = driver.find_element_by_id('ajaxLogin')
         if login_dom.is_displayed():
-            self.input_keyin("memId", self.email)
-            self.driver.execute_script(
+            self.input_keyin(driver, "memId", self.email)
+            driver.execute_script(
                 """
                     const input_password = document.getElementById('passwd');
                     input_password.style.display = "block"
                 """)
-            self.input_keyin("passwd", self.password)
-            self.driver.find_element_by_id("loginForm").submit()
+            self.input_keyin(driver, "passwd", self.password)
+            driver.find_element_by_id("loginForm").submit()
 
         # btnRegisters = driver.find_element_by_id('promo0_0')
 
@@ -69,8 +76,8 @@ class MomoPanic:
             try:
                 wait.until(EC.alert_is_present())
                 alert.accept()
-                time.sleep(0.2)
-                element = self.driver.find_element_by_id('promo0_0')
+                time.sleep(0.1)
+                element = driver.find_element_by_id(self.target_id)
                 if element.is_displayed():
                     element.click()
                 else:
@@ -78,6 +85,24 @@ class MomoPanic:
             except UnexpectedAlertPresentException:
                 print(UnexpectedAlertPresentException)
 
+    def thread_run(self):
+        for i in range(self.browser_qty):
+            t = threading.Thread(name='Test {}'.format(
+                i), target=self.panic_spree_script)
+            # t.setDaemon(True)
+            t.start()
+            time.sleep(1)
+            self.thread_list.append(t)
+        for thread in self.thread_list:
+            thread.join()
 
-momoPanic = MomoPanic()
-momoPanic.run()
+    def run(self, data):
+        self.load_credentials(data)
+        self.thread_run()
+
+    def stop(self):
+        for i, driver in enumerate(self.dummy_drivers):
+            t = threading.Thread(name='Close {}'.format(
+                i), target=driver.quit)
+            # t.setDaemon(True)
+            t.start()

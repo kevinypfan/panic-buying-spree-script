@@ -3,7 +3,7 @@ from views.activate_ui import Ui_MainWindow
 import sys
 import requests
 from windows.utils import critical
-from utils.helpers import getMachine_addr
+from tools.helpers import getMachine_addr
 from windows.main import MainWindow
 
 

@@ -3,17 +3,19 @@ import sys
 from windows.activate import ActivateWindow
 from windows.main import MainWindow
 from windows.shutdown import ShutdownWindow
-from utils.helpers import is_activate, load_activate_code, getMachine_addr
+from tools.helpers import is_activate, load_activate_code, getMachine_addr
 from pchome_cookie import PchomePanic
+from momo_cookie import MomoPanic
 
 
 
 app = QtWidgets.QApplication([])
 
 pchome = PchomePanic()
+momo = MomoPanic()
 
-shutdownWindow = ShutdownWindow(pchome)
-mainWindow = MainWindow(shutdownWindow.show, pchome)
+shutdownWindow = ShutdownWindow(pchome, momo)
+mainWindow = MainWindow(shutdownWindow.show, pchome, momo)
 
 if is_activate(load_activate_code(), getMachine_addr()):
     mainWindow.show()
