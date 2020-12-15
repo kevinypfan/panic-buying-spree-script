@@ -49,14 +49,14 @@ class PchomePanic:
         input_password.send_keys(self.password)
         time.sleep(1)
         btn_login.click()
-        time.sleep(6)
+        time.sleep(8)
 
         self.cookie = driver.get_cookies()
         jsonCookies = json.dumps(self.cookie)
         with open('vcyber.json', 'w') as f:
             f.write(jsonCookies)
 
-        # driver.quit()
+        driver.quit()
 
     def panic_spree_script(self):
         option = webdriver.ChromeOptions()
