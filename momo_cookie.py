@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.alert import Alert
 import threading
+import random
 
 import time
 import sys
@@ -36,11 +37,10 @@ class MomoPanic:
         time.sleep(0.5)
         element.send_keys(value)
 
-
     def panic_spree_script(self):
         option = webdriver.ChromeOptions()
         driver = webdriver.Chrome(chrome_options=option,
-                                       executable_path='chromedriver.exe')
+                                  executable_path='chromedriver.exe')
         self.dummy_drivers.append(driver)
 
         alert = Alert(driver)
@@ -76,7 +76,7 @@ class MomoPanic:
             try:
                 wait.until(EC.alert_is_present())
                 alert.accept()
-                time.sleep(0.1)
+                time.sleep(random.uniform(0.4, 0.9))
                 element = driver.find_element_by_id(self.target_id)
                 if element.is_displayed():
                     element.click()

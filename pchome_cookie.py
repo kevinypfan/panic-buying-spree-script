@@ -11,9 +11,13 @@ import json
 # from fake_useragent import UserAgent
 import random
 
+from fake_useragent import UserAgent
+
 
 class PchomePanic:
     def __init__(self):
+        self.ua = UserAgent()
+
         self.cookie = None
         self.email = None
         self.password = None
@@ -21,7 +25,6 @@ class PchomePanic:
         self.thread_list = list()
         self.browser_qty = None
         self.dummy_drivers = []
-
 
     def load_credentials(self, data):
         self.base_url = 'https://ecvip.pchome.com.tw/login/v3/login.htm?rurl='
@@ -32,7 +35,7 @@ class PchomePanic:
 
     def first_login(self):
         option = webdriver.ChromeOptions()
-        # option.add_argument(f"user-agent={self.user_agent}")
+        # option.add_argument(f"user-agent={self.ua.google}")
         driver = webdriver.Chrome(chrome_options=option,
                                   executable_path='./chromedriver')
         self.base_url = 'https://ecvip.pchome.com.tw/login/v3/login.htm?rurl='
@@ -53,7 +56,7 @@ class PchomePanic:
         with open('vcyber.json', 'w') as f:
             f.write(jsonCookies)
 
-        driver.quit()
+        # driver.quit()
 
     def panic_spree_script(self):
         option = webdriver.ChromeOptions()
@@ -89,6 +92,7 @@ class PchomePanic:
     def refresh_clickbtn(self, driver):
         try:
             driver.find_element_by_id("btnRegister").click()
+            time.sleep(random.uniform(0.2, 0.5))
         except ElementNotInteractableException:
             pass
         except:
@@ -96,7 +100,7 @@ class PchomePanic:
         # time.sleep(random.uniform(self.wait_min_secend, self.wait_max_secend))
 
     def thread_run(self):
- 
+
         for i in range(self.browser_qty):
             t = threading.Thread(name='Test {}'.format(
                 i), target=self.panic_spree_script)
@@ -106,7 +110,6 @@ class PchomePanic:
             self.thread_list.append(t)
         for thread in self.thread_list:
             thread.join()
-
 
     def run(self, data):
         self.load_credentials(data)
@@ -119,5 +122,3 @@ class PchomePanic:
                 i), target=driver.quit)
             # t.setDaemon(True)
             t.start()
-
-
