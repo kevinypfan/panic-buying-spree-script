@@ -39,8 +39,8 @@ class PchomePanic:
         driver = webdriver.Chrome(chrome_options=option,
                                   executable_path='./chromedriver')
         self.base_url = 'https://ecvip.pchome.com.tw/login/v3/login.htm?rurl='
-        driver.get(self.base_url + self.target_url)
-
+        driver.get("https://ecvip.pchome.com.tw/web/order/all")
+        time.sleep(1)
         input_email = driver.find_element_by_id("loginAcc")
         input_password = driver.find_element_by_id("loginPwd")
         btn_login = driver.find_element_by_id("btnLogin")
