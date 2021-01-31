@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, QtGui
+from PyQt5 import QtWidgets, QtGui, QtCore
 from views.main_ui import Ui_MainWindow
 import sys
 import os
@@ -6,6 +6,18 @@ import json
 from tools.helpers import validateJSON
 import threading
 from diglogs.about import AboutDialog
+import time
+
+
+def run_once(f):
+    def wrapper(*args, **kwargs):
+        if not wrapper.has_run:
+            wrapper.has_run = True
+            return f(*args, **kwargs)
+    wrapper.has_run = False
+    return wrapper
+
+
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -56,6 +68,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.ui.momo_record.setChecked(form_data['record'])
 
     def setup_pchome_data(self):
+        currentTime = QtCore.QDateTime.currentDateTime()
         if os.path.exists('pchome_record.json'):
             f = open('pchome_record.json')
             json_data = f.read()
@@ -67,6 +80,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.ui.pchome_target_url.setText(form_data['target_url'])
                 self.ui.pchome_browser_qty.setValue(form_data['browser_qty'])
                 self.ui.pchome_record.setChecked(form_data['record'])
+                self.ui.excute_date.setDateTime(currentTime)
+
 
     def about_show(self):
         self.aboutDialog.show()
@@ -76,24 +91,41 @@ class MainWindow(QtWidgets.QMainWindow):
         sys.exit(0)
 
     def pchome_submit_btn_handler(self):
+        
+
         form_data = {
             'email': self.ui.pchome_email.text(),
             'password': self.ui.pchome_password.text(),
             'target_url': self.ui.pchome_target_url.text(),
             'browser_qty': self.ui.pchome_browser_qty.value(),
-            'record': self.ui.pchome_record.isChecked()
+            'record': self.ui.pchome_record.isChecked(),
         }
         if self.ui.pchome_record.isChecked():
             json_form_data = json.dumps(form_data)
             with open('pchome_record.json', 'w') as f:
                 f.write(json_form_data)
+
+        form_data['excute_date'] = self.ui.excute_date.dateTime()
+        self.pchome.load_credentials(form_data)
+        self.run_thread('first_login', self.pchome.first_login)
+        self.close()
+        self.next()
+        currentTime = QtCore.QDateTime.currentDateTime()
+        while currentTime < form_data['excute_date']:
+            print(f"{currentTime} vs {form_data['excute_date']}")
+            time.sleep(0.6)
+            currentTime = QtCore.QDateTime.currentDateTime()
+
+        self.run_thread('thread_run', self.pchome.thread_run)
         
-        t = threading.Thread(name='auto start', target=self.pchome.run, args=[form_data])
+        # self.run_chrome(form_data)
+    
+
+    def run_thread(self, thread_name, excute_func, *args):
+        t = threading.Thread(name=thread_name, target=excute_func, args=args)
         t.setDaemon(True)
         t.start()
 
-        self.close()
-        self.next()
 
 
     def momo_submit_btn_handler(self):
