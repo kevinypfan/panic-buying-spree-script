@@ -110,18 +110,22 @@ class MainWindow(QtWidgets.QMainWindow):
         self.run_thread('first_login', self.pchome.first_login)
         self.close()
         self.next()
+        self.run_thread('timeout_run', self.timeout_run, form_data['excute_date'])
+        
+        # self.run_chrome(form_data)
+
+    def timeout_run(self, excute_date):
         currentTime = QtCore.QDateTime.currentDateTime()
-        while currentTime < form_data['excute_date']:
-            print(f"{currentTime} vs {form_data['excute_date']}")
+        while currentTime < excute_date:
+            print(f"{currentTime} vs {excute_date}")
             time.sleep(0.6)
             currentTime = QtCore.QDateTime.currentDateTime()
 
-        self.run_thread('thread_run', self.pchome.thread_run)
-        
-        # self.run_chrome(form_data)
+        self.pchome.thread_run()
     
 
     def run_thread(self, thread_name, excute_func, *args):
+        print(args)
         t = threading.Thread(name=thread_name, target=excute_func, args=args)
         t.setDaemon(True)
         t.start()
