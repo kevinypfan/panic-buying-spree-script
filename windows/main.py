@@ -69,6 +69,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def setup_pchome_data(self):
         currentTime = QtCore.QDateTime.currentDateTime()
+        self.ui.excute_date.setDateTime(currentTime)
         if os.path.exists('pchome_record.json'):
             f = open('pchome_record.json')
             json_data = f.read()
@@ -80,7 +81,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.ui.pchome_target_url.setText(form_data['target_url'])
                 self.ui.pchome_browser_qty.setValue(form_data['browser_qty'])
                 self.ui.pchome_record.setChecked(form_data['record'])
-                self.ui.excute_date.setDateTime(currentTime)
+                
 
 
     def about_show(self):

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "pchome小幫手"
-#define MyAppVersion "2.1"
+#define MyAppVersion "3.0"
 #define MyAppPublisher "KevinFan"
 #define MyAppExeName "pchome小幫手.exe"
 
@@ -19,7 +19,7 @@ DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 OutputDir=D:\KevinFan\panic-buying-spree-script
-OutputBaseFilename=pchome小幫手安裝檔v2.1
+OutputBaseFilename=pchome小幫手安裝檔v3.0
 SetupIconFile=D:\KevinFan\panic-buying-spree-script\dist\v2\comics-ironman-hand_97416.ico
 Compression=lzma
 SolidCompression=yes
