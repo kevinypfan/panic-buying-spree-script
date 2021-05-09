@@ -69,13 +69,16 @@ class MomoPanic:
                 """)
             self.input_keyin(driver, "passwd", self.password)
             driver.find_element_by_id("loginForm").submit()
+            time.sleep(5)
 
         # btnRegisters = driver.find_element_by_id('promo0_0')
 
         while True:
             try:
-                wait.until(EC.alert_is_present())
-                alert.accept()
+                # wait.until(EC.alert_is_present())
+                # alert.accept()
+                driver.find_element_by_xpath(
+                    "/html[@class='swal2-shown swal2-height-auto']/body[@class='swal2-shown swal2-height-auto']/div[@class='swal2-container swal2-center swal2-backdrop-show']/div[@class='swal2-popup swal2-modal swal2-icon-warning swal2-show']/div[@class='swal2-actions']").click()
                 time.sleep(random.uniform(0.4, 0.9))
                 element = driver.find_element_by_id(self.target_id)
                 if element.is_displayed():
