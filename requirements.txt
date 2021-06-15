@@ -1,2 +1,4 @@
 selenium
 requests
+PyQt5
+fake_useragent
